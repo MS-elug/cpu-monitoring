@@ -1,0 +1,6 @@
+{
+    "name": "@monitoring/openapi",
+    "version": "1.0.0",
+    "main": "monitoring-api.yml",
+    "license": "UNLICENSED"
+}

@@ -1,0 +1,46 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://localhost:3001/api/v1'
+info:
+  description: >-
+    Set of APIs to monitor machines (CPU usage)
+  version: 1.0.0
+  title: OpenAPI Monitoring
+  license:
+    name: Apache-2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: cpu
+    description: Everything about CPU monitoring
+paths:
+  /cpu/load:
+    get:
+      tags:
+        - cpu
+      summary: CPU Load Information  
+      description: Return the CPU load (actualized every 10s)
+      operationId: getLoad
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CPULoad'
+        '500':
+          description: An error occured on the server
+components:
+  schemas:
+    CPULoad:
+      title: CPU Load Information
+      description: An order for a pets from the pet store
+      type: object
+      properties:
+        time:
+          type: string
+          format: date-time
+        average:
+          type: integer
+      required:
+        - time
+        - average
