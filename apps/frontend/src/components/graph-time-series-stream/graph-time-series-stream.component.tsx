@@ -29,6 +29,7 @@ function configureGraph(graph: any, containerEl: HTMLDivElement) {
   graph.render();
 }
 
+/** Component to display Streamed TimeSeries  */
 function GraphTimeSeriesStream(props: Props) {
   const classes = useStyles();
   const { $value, valueName, timeWindow, timeInterval, className } = props;

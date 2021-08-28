@@ -15,7 +15,7 @@ function CpuLoadTimeSeries(props: Props) {
       // Check if there were an issue to get the average
       const invalidAverage = cpuLoad.average < 0;
       // In case of error for average computation, display a 0 value
-      return { x: new Date(cpuLoad.time).getTime(), y: invalidAverage ? 0 : cpuLoad.average };
+      return { x: new Date(cpuLoad.time).getTime(), y: (invalidAverage ? 0 : cpuLoad.average) * 100 };
     })
   );
 

@@ -1,34 +1,12 @@
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import CpuLoadTimeSeries from '../cpu-load-time-series/cpu-load-time-series.component';
 import CpuLoadTable from '../cpu-load-table/cpu-load-table.component';
 import clsx from 'clsx';
+import { Typography } from '@material-ui/core';
+import { useStyles } from './dashboard.style';
+import CpuLoadSnapshot from '../cpu-load-snapshot/cpu-load-snapshot';
 
-const useStyles = makeStyles((theme) => ({
-  dashboard: {
-  },
-  cpuLoadSection: {
-    backgroundColor: '#252f3e',
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    flex:2,
-    overflow: 'hidden'
-  },
-  cpuLoadDetailsSection: {
-    flex:3,
-    paddingTop: theme.spacing(4)
-  },
-  paper: {
-    padding: theme.spacing(4)
-  },
-  fullHeight:{
-    height: '100%',
-  },
-  overflowHidden: {
-    overflow: 'hidden'
-  }
-}));
 
 function Dashboard() {
   const classes = useStyles();
@@ -37,8 +15,17 @@ function Dashboard() {
     <Grid container direction="column" alignItems="stretch" className={clsx(classes.dashboard, classes.fullHeight)}>
       <Grid item xs={12} className={classes.cpuLoadSection}>
         <Grid container direction="row" justifyContent="center" alignItems="flex-start" className={classes.fullHeight}>
-          <Grid item xs={8} className={classes.fullHeight}>
-            <CpuLoadTimeSeries className={classes.fullHeight}></CpuLoadTimeSeries>
+          <Grid item xs={8} className={clsx(classes.fullHeight, classes.container)}>
+            <Grid container direction="column" alignItems="stretch" className={clsx(classes.fullHeight)}>
+              <Grid item>
+                <Typography variant="h6" gutterBottom className={classes.lightText}>
+                  CPU Monitoring Dashboard
+                </Typography>
+              </Grid>
+              <Grid item style={{ flexGrow: 1 }} className={clsx(classes.fullWidth, classes.overflowHidden)}>
+                <CpuLoadTimeSeries className={classes.fullHeight}></CpuLoadTimeSeries>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
@@ -50,7 +37,9 @@ function Dashboard() {
             </Paper>
           </Grid>
           <Grid item>
-            <Paper className={classes.paper}>test</Paper>
+            <Paper className={classes.paper}>
+              <CpuLoadSnapshot></CpuLoadSnapshot>
+            </Paper>
           </Grid>
         </Grid>
       </Grid>

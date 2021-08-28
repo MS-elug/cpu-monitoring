@@ -6,6 +6,7 @@ import { defaultTheme } from './themes/default/default.theme';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import '@fontsource/roboto';
 
 ReactDOM.render(
   <React.StrictMode>

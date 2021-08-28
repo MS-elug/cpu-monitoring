@@ -7,7 +7,7 @@ export function useObservable<T>(observable: Observable<T>, initialValue?: T): [
   useEffect(() => {
     if (!observable) return;
     const subscription = new Subscription();
-
+    console.log('subscribe')
     subscription.add(
       observable.subscribe((value) => {
         setValue(value);

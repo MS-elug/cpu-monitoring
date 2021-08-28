@@ -29,6 +29,11 @@ class CpuMonitoringService {
       return;
     }
 
+    /**
+     * Start polling of cpu average from backend
+     * Also automatically cancel HTTP request when a new polling starts and emits an average with value -1. 
+     * In case of issue to reach the backend, an average with value -1 is emitted.
+     */
     this.pollingSubcription = interval(this.pollingPeriod)
       .pipe(
         switchMap(() => {
@@ -43,6 +48,10 @@ class CpuMonitoringService {
       .subscribe((cpuLoad) => {
         // Emit value
         this.$cpuLoad.next(cpuLoad);
+        // Log any connectivity error
+        if(cpuLoad.average === -1){
+            console.error(`CPU Load data cannot be collected from backend`);
+        }
       });
   }
 
