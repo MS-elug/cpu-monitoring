@@ -1,9 +1,7 @@
 import { map } from 'rxjs/operators';
+import { monitoringPeriod, monitoringTimeWindow } from '../../environement/environement';
 import { cpuMonitoringService } from '../../services/cpu-monitoring.service';
 import GraphTimeSeriesStream from '../graph-time-series-stream/graph-time-series-stream.component';
-
-const timeInterval = cpuMonitoringService.pollingPeriod;
-const timeWindow = 10 * 60 * 1000;
 
 interface Props {
   className?: string;
@@ -19,7 +17,7 @@ function CpuLoadTimeSeries(props: Props) {
     })
   );
 
-  return <GraphTimeSeriesStream className={className} $value={value$} valueName={'average load (last 1m)'} timeInterval={timeInterval} timeWindow={timeWindow}></GraphTimeSeriesStream>;
+  return <GraphTimeSeriesStream className={className} $value={value$} valueName={'average load (last 1m)'} timeInterval={monitoringPeriod} timeWindow={monitoringTimeWindow}></GraphTimeSeriesStream>;
 }
 
 export default CpuLoadTimeSeries;

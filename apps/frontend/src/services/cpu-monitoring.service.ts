@@ -1,11 +1,9 @@
 import { Subject, interval, Subscription, switchMap } from 'rxjs';
 import { CpuApi, CPULoad } from '@monitoring/api-client';
 import { axiosAsObservable } from '../utils/axios-as-observable';
+import { monitoringPeriod } from '../environement/environement';
 
 class CpuMonitoringService {
-  /** Set polling time interval to 10s*/
-  public readonly pollingPeriod = 1 * 1000;
-
   /** Keep state of polling activity */
   private pollingSubcription: Subscription | null = null;
 
@@ -13,11 +11,6 @@ class CpuMonitoringService {
   private $cpuLoad: Subject<CPULoad> = new Subject();
 
   private cpuApi = new CpuApi();
-
-  constructor() {
-    // Automatically start the monitoring
-    this.startMonitoring();
-  }
 
   getCpuLoad$() {
     return this.$cpuLoad.asObservable();
@@ -31,10 +24,10 @@ class CpuMonitoringService {
 
     /**
      * Start polling of cpu average from backend
-     * Also automatically cancel HTTP request when a new polling starts and emits an average with value -1. 
+     * Also automatically cancel HTTP request when a new polling starts and emits an average with value -1.
      * In case of issue to reach the backend, an average with value -1 is emitted.
      */
-    this.pollingSubcription = interval(this.pollingPeriod)
+    this.pollingSubcription = interval(monitoringPeriod)
       .pipe(
         switchMap(() => {
           // In case of orror or timeout returns a -1 average value
@@ -49,8 +42,8 @@ class CpuMonitoringService {
         // Emit value
         this.$cpuLoad.next(cpuLoad);
         // Log any connectivity error
-        if(cpuLoad.average === -1){
-            console.error(`CPU Load data cannot be collected from backend`);
+        if (cpuLoad.average === -1) {
+          console.error(`CPU Load data cannot be collected from backend`);
         }
       });
   }
