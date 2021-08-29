@@ -1,5 +1,6 @@
-import { cpuAlertService, CPUPeriod, CPUState } from './cpu-alert.service';
+import { cpuAlertService } from './cpu-alert.service';
 import { CPULoad } from '@monitoring/api-client';
+import { CPUPeriod, CPUState } from '../store/cpu-load/cpu-load-slice';
 
 interface CPULoadTestData extends CPULoad {
   stateExpected: CPUState;

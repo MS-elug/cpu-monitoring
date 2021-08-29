@@ -1,6 +1,5 @@
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { CPUPeriod, CPUState } from '../../services/cpu-alert.service';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,9 +7,10 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { selectCpuLoadPeriodsSorted, selectCpuLoadStatus } from '../../store/cpu-load/cpu-load-slice';
+import { selectCpuLoadPeriodsSorted } from '../../store/cpu-load/cpu-load-periods.selector';
 import { useAppSelector } from '../../store/hooks';
 import { useMemo } from 'react';
+import { CPUPeriod, CPUState, selectCpuLoadStatus } from '../../store/cpu-load/cpu-load-slice';
 
 export const stateLabelMapping: { [key in CPUState]: string } = {
   heavy: 'Heavy Load',

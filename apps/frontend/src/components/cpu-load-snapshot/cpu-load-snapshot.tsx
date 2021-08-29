@@ -28,11 +28,11 @@ function CpuLoadSnapshot() {
   const classes = useStyles();
 
   return (
-    <div className={clsx(classes.root, cpuLoadLast && cpuLoadLast.average >=1  && classes.alert)}>
+    <div className={clsx(classes.root/*, cpuLoadLast && cpuLoadLast.average >=1  && classes.alert*/)}>
       <Typography variant="button" display="block">
         Real Time
       </Typography>
-      {cpuLoadLast ? (cpuLoadLast.average).toFixed(2) : "N/A"}
+      {cpuLoadLast ? (cpuLoadLast.average).toFixed(3) : "N/A"}
       {cpuLoadTrend === '+' && <TrendingUpIcon style={{ color: 'red' }} />}
       {cpuLoadTrend === '-' && <TrendingDownIcon style={{ color: 'green' }} />}
       {cpuLoadTrend === '=' && <TrendingFlatIcon style={{ color: 'green' }} />}

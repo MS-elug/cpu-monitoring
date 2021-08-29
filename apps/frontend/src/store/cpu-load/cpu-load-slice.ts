@@ -2,19 +2,25 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 import { CPULoad } from '@monitoring/api-client';
 import { maxPeriodChangeStorage, monitoringPeriod, monitoringTimeWindow } from '../../environement/environement';
-import { CPUPeriod } from '../../services/cpu-alert.service';
 
 /** Compute max data storage */
 const maxLength = Math.trunc(monitoringTimeWindow / monitoringPeriod);
 
-export type CPULoadStatus = 'initial' | 'recovered' | 'heavy';
+export type CPUState = 'initial' | 'recovered' | 'heavy';
+
+export interface CPUPeriod {
+  state: CPUState;
+  startTime: string | undefined;
+  endTime: string | undefined;
+}
 
 // Define a type for the slice state
 type CPULoadState = {
   data: CPULoad[];
   periods: CPUPeriod[];
-  status: CPULoadStatus;
+  status: CPUState;
 };
+
 
 // Define the initial state
 const initialState: CPULoadState = {
@@ -45,7 +51,7 @@ export const cpuLoadSlice = createSlice({
     clearPeriod: (state) => {
       state.data.splice(0);
     },
-    setStatus: (state, action: PayloadAction<CPULoadStatus>) => {
+    setStatus: (state, action: PayloadAction<CPUState>) => {
       state.status = action.payload;
     }
   }
@@ -62,19 +68,6 @@ function compareCpuLoadByTime(a: CPULoad, b: CPULoad) {
   return new Date(a.time).getTime() - new Date(b.time).getTime();
 }
 export const selectCpuLoadDataSorted = (state: RootState) => [...state.cpuLoad.data].sort(compareCpuLoadByTime);
-
-// Selector to get the periods sorted by date
-function compareCpuPeriodByTime(a: CPUPeriod, b: CPUPeriod) {
-  if (!a.startTime) {
-    return -1;
-  }
-  if (!b.startTime) {
-    return 1;
-  }
-  return new Date(a.startTime).getTime() - new Date(b.startTime).getTime();
-}
-export const selectCpuLoadPeriodsSorted = (state: RootState) => [...state.cpuLoad.periods].sort(compareCpuPeriodByTime);
-export const selectCpuLoadPeriods = (state: RootState) => state.cpuLoad.periods;
 
 export const selectCpuLoadStatus = (state: RootState) => state.cpuLoad.status;
 

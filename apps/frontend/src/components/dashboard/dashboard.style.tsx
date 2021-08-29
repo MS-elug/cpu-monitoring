@@ -35,9 +35,5 @@ export const useStyles = makeStyles((theme) => ({
   },
   lightText: {
     color: 'white'
-  },
-  paperAlert: {
-    color: 'white',
-    backgroundColor: '#f44336'
   }
 }));

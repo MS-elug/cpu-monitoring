@@ -1,14 +1,7 @@
 import { CPULoad } from '@monitoring/api-client';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { minPeriodStateDetection } from '../environement/environement';
-
-export type CPUState = 'initial' | 'recovered' | 'heavy';
-
-export interface CPUPeriod {
-  state: CPUState;
-  startTime: string | undefined;
-  endTime: string | undefined;
-}
+import { CPUPeriod, CPUState } from '../store/cpu-load/cpu-load-slice';
 
 class CpuAlertService {
   private state$: BehaviorSubject<CPUState> = new BehaviorSubject<CPUState>('initial');
