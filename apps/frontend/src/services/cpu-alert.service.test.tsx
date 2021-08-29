@@ -70,6 +70,19 @@ it('shoud not detect heavy load status', () => {
   expectRunner(testData);
 });
 
+it('shoud not change initial state to recovery load status', () => {
+  cpuAlertService.init('initial', null, null);
+
+  const testData: CPULoadTestData[] = [
+    { time: '2021-09-29T10:01:15.000Z', average: 0.2, stateExpected: 'initial' as CPUState, emittedState: null, emittedPeriod: null },
+    { time: '2021-09-29T10:01:20.000Z', average: 1.2, stateExpected: 'initial' as CPUState, emittedState: null, emittedPeriod: null },
+    { time: '2021-09-29T10:03:21.000Z', average: 0.2, stateExpected: 'initial' as CPUState, emittedState: null, emittedPeriod: null },
+    { time: '2021-09-29T10:06:21.000Z', average: 0.2, stateExpected: 'initial' as CPUState, emittedState: null, emittedPeriod: null }
+  ];
+
+  expectRunner(testData);
+});
+
 it('shoud detect recovery load status', () => {
   cpuAlertService.init('heavy', { time: '2021-09-29T10:01:00.000Z', average: 1.2 }, null);
 
@@ -101,17 +114,17 @@ it('shoud not detect recovery load status', () => {
 });
 
 it('shoud detect several load status change', () => {
-  cpuAlertService.init('recovered', null, null);
+  cpuAlertService.init('initial', null, null);
 
   const testData: CPULoadTestData[] = [
-    { time: '2021-09-29T10:01:15.000Z', average: 1.8, stateExpected: 'recovered' as CPUState, emittedState: null, emittedPeriod: null },
-    { time: '2021-09-29T10:01:20.000Z', average: 1.2, stateExpected: 'recovered' as CPUState, emittedState: null, emittedPeriod: null },
+    { time: '2021-09-29T10:01:10.000Z', average: 1.8, stateExpected: 'initial' as CPUState, emittedState: null, emittedPeriod: null },
+    { time: '2021-09-29T10:01:20.000Z', average: 1.2, stateExpected: 'initial' as CPUState, emittedState: null, emittedPeriod: null },
     {
       time: '2021-09-29T10:03:25.000Z',
       average: 1.2,
       stateExpected: 'heavy' as CPUState,
       emittedState: 'heavy',
-      emittedPeriod: { state: 'recovered' as CPUState, startTime: undefined, endTime: '2021-09-29T10:01:15.000Z' }
+      emittedPeriod: { state: 'initial' as CPUState, startTime: undefined, endTime: '2021-09-29T10:01:10.000Z' }
     },
     { time: '2021-09-29T10:04:25.000Z', average: 0.2, stateExpected: 'heavy' as CPUState, emittedState: null, emittedPeriod: null },
     { time: '2021-09-29T10:05:25.000Z', average: 0.2, stateExpected: 'heavy' as CPUState, emittedState: null, emittedPeriod: null },
@@ -120,7 +133,7 @@ it('shoud detect several load status change', () => {
       average: 0.2,
       stateExpected: 'recovered' as CPUState,
       emittedState: 'recovered',
-      emittedPeriod: { state: 'heavy' as CPUState, startTime: '2021-09-29T10:01:15.000Z', endTime: '2021-09-29T10:04:25.000Z' }
+      emittedPeriod: { state: 'heavy' as CPUState, startTime: '2021-09-29T10:01:10.000Z', endTime: '2021-09-29T10:04:25.000Z' }
     },
     { time: '2021-09-29T10:07:25.000Z', average: 0.2, stateExpected: 'recovered' as CPUState, emittedState: null, emittedPeriod: null }
   ];

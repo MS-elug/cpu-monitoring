@@ -1,4 +1,4 @@
-import { Subject, interval, Subscription, switchMap } from 'rxjs';
+import { Subject, interval, Subscription, switchMap, of, merge } from 'rxjs';
 import { CpuApi, CPULoad } from '@monitoring/api-client';
 import { axiosAsObservable } from '../utils/axios-as-observable';
 import { monitoringPeriod } from '../environement/environement';
@@ -16,6 +16,11 @@ class CpuMonitoringService {
     return this.$cpuLoad.asObservable();
   }
 
+  onData(cpuLoad: CPULoad) {
+    // Emit value
+    this.$cpuLoad.next(cpuLoad);
+  }
+
   startMonitoring(): void {
     // Check is state change
     if (this.pollingSubcription !== null) {
@@ -27,7 +32,7 @@ class CpuMonitoringService {
      * Also automatically cancel HTTP request when a new polling starts and emits an average with value -1.
      * In case of issue to reach the backend, an average with value -1 is emitted.
      */
-    this.pollingSubcription = interval(monitoringPeriod)
+    this.pollingSubcription = merge(of(0), interval(monitoringPeriod))
       .pipe(
         switchMap(() => {
           // In case of orror or timeout returns a -1 average value
@@ -40,7 +45,7 @@ class CpuMonitoringService {
       )
       .subscribe((cpuLoad) => {
         // Emit value
-        this.$cpuLoad.next(cpuLoad);
+        this.onData(cpuLoad);
         // Log any connectivity error
         if (cpuLoad.average === -1) {
           console.error(`CPU Load data cannot be collected from backend`);

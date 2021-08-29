@@ -1,8 +1,8 @@
 import { CPULoad } from '@monitoring/api-client';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { minPeriodStateDetecttion } from '../environement/environement';
+import { minPeriodStateDetection } from '../environement/environement';
 
-export type CPUState = 'recovered' | 'heavy';
+export type CPUState = 'initial' | 'recovered' | 'heavy';
 
 export interface CPUPeriod {
   state: CPUState;
@@ -11,7 +11,7 @@ export interface CPUPeriod {
 }
 
 class CpuAlertService {
-  private state$: BehaviorSubject<CPUState> = new BehaviorSubject<CPUState>('recovered');
+  private state$: BehaviorSubject<CPUState> = new BehaviorSubject<CPUState>('initial');
   private statePeriod$: Subject<CPUPeriod> = new Subject<CPUPeriod>();
   private firstHeavyLoad: CPULoad | null = null;
   private firstRecoveredLoad: CPULoad | null = null;
@@ -35,14 +35,14 @@ class CpuAlertService {
   }
 
   reset() {
-    this.state$.next('recovered');
+    this.state$.next('initial');
     this.firstHeavyLoad = null;
     this.firstRecoveredLoad = null;
   }
 
   onData(cpuLoad: CPULoad) {
     const state = this.state$.getValue();
-    if (state === 'recovered') {
+    if (state === 'recovered' || state === 'initial') {
       // Detection of rising edge
       if (cpuLoad.average >= 1) {
         // Keep first heavy load detection
@@ -50,7 +50,7 @@ class CpuAlertService {
           this.firstHeavyLoad = cpuLoad;
         }
         // Detect if the heavy state lasted for more than 2 minutes without interruption
-        if (new Date(cpuLoad.time).getTime() - new Date(this.firstHeavyLoad.time).getTime() >= minPeriodStateDetecttion) {
+        if (new Date(cpuLoad.time).getTime() - new Date(this.firstHeavyLoad.time).getTime() >= minPeriodStateDetection) {
           this.state$.next('heavy');
           // Last state change, broadcast the details
           this.statePeriod$.next({
@@ -60,6 +60,7 @@ class CpuAlertService {
           });
         }
       } else {
+        // Heavy start reset
         this.firstHeavyLoad = null;
       }
     } else if (state === 'heavy') {
@@ -70,7 +71,7 @@ class CpuAlertService {
         }
 
         // Detect if the recovery state lasted for more than 2 minutes without interruption
-        if (new Date(cpuLoad.time).getTime() - new Date(this.firstRecoveredLoad.time).getTime() >= minPeriodStateDetecttion) {
+        if (new Date(cpuLoad.time).getTime() - new Date(this.firstRecoveredLoad.time).getTime() >= minPeriodStateDetection) {
           this.state$.next('recovered');
           // Last state change, broadcast the details
           this.statePeriod$.next({
@@ -80,6 +81,7 @@ class CpuAlertService {
           });
         }
       } else {
+        // Recovery start reset
         this.firstRecoveredLoad = null;
       }
     }
