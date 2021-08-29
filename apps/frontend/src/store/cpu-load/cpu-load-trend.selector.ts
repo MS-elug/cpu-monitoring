@@ -1,5 +1,5 @@
 import { RootState } from "../index";
-import { selectCpuLoadSorted } from "./cpu-load-slice";
+import { selectCpuLoadDataSorted } from "./cpu-load-slice";
 
 // Old fashion import / the module doesn't support import
 const regression = require('regression');
@@ -10,7 +10,7 @@ export type CpuLoadTrendType = '-' | '+' | '=';
 export const selectCpuLoadTrend = (state: RootState): CpuLoadTrendType | null => {
   // Define the number of measures needed to compute a trend
   const numberOfMeasures = 5;
-  const measures = selectCpuLoadSorted(state)
+  const measures = selectCpuLoadDataSorted(state)
     .slice(-1 - numberOfMeasures, -1) // Take the last N measures
     .map((cpuLoad) => [new Date(cpuLoad.time).getTime(), cpuLoad.average * 10000000000]); // Magic number to avoid precisions issues whith later computing, can be improved !
 

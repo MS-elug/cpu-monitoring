@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import { cpuMonitoringService } from './services/cpu-monitoring.service';
 import { cpuLoadSlice } from './store/cpu-load/cpu-load-slice';
+import { cpuAlertService } from './services/cpu-alert.service';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -31,7 +32,13 @@ cpuMonitoringService.startMonitoring();
 
 // Link CPU Monitoring service with the store
 cpuMonitoringService.getCpuLoad$().subscribe((cpuLoad) => {
-  store.dispatch(cpuLoadSlice.actions.push(cpuLoad));
+  store.dispatch(cpuLoadSlice.actions.pushData(cpuLoad));
+  cpuAlertService.onData(cpuLoad);
+});
+
+// Link the CPU Alert service with the store
+cpuAlertService.getState$().subscribe((status) => {
+  store.dispatch(cpuLoadSlice.actions.setStatus(status === 'heavy' ? 'overloaded' : 'normal'));
 });
 
 // If you want to start measuring performance in your app, pass a function

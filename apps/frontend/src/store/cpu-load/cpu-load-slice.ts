@@ -6,30 +6,41 @@ import { monitoringPeriod, monitoringTimeWindow } from '../../environement/envir
 /** Compute max data storage */
 const maxLength = Math.trunc(monitoringTimeWindow / monitoringPeriod);
 
+export type CPULoadStatus = 'normal' | 'overloaded';
+
 // Define a type for the slice state
-type CpuState = CPULoad[];
+type CPULoadState = {
+  data: CPULoad[];
+  status: CPULoadStatus;
+};
 
 // Define the initial state
-const initialState: CpuState = [] as CPULoad[];
+const initialState: CPULoadState = {
+  data: [] as CPULoad[],
+  status: 'normal'
+};
 
 export const cpuLoadSlice = createSlice({
   name: 'cpu-load',
   initialState,
   reducers: {
-    push: (state, action: PayloadAction<CPULoad>) => {
-      if (state.length === maxLength) {
-        state.shift();
+    pushData: (state, action: PayloadAction<CPULoad>) => {
+      if (state.data.length === maxLength) {
+        state.data.shift();
       }
-      state.push(action.payload);
+      state.data.push(action.payload);
     },
-    clear: (state) => {
-      state.splice(0);
+    clearData: (state) => {
+      state.data.splice(0);
+    },
+    setStatus: (state, action: PayloadAction<CPULoadStatus>) => {
+      state.status = action.payload;
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { push, clear } = cpuLoadSlice.actions;
+export const { pushData, clearData, setStatus } = cpuLoadSlice.actions;
 
 // Default selector to get the data
 export const selectCpuLoad = (state: RootState) => state.cpuLoad;
@@ -38,6 +49,6 @@ export const selectCpuLoad = (state: RootState) => state.cpuLoad;
 function compareCpuLoadByTime(a: CPULoad, b: CPULoad) {
   return new Date(a.time).getTime() - new Date(b.time).getTime();
 }
-export const selectCpuLoadSorted = (state: RootState) => [...state.cpuLoad].sort(compareCpuLoadByTime);
+export const selectCpuLoadDataSorted = (state: RootState) => [...state.cpuLoad.data].sort(compareCpuLoadByTime);
 
 export default cpuLoadSlice.reducer;

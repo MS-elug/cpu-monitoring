@@ -1,0 +1,90 @@
+import { CPULoad } from '@monitoring/api-client';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { minPeriodStateDetecttion } from '../environement/environement';
+
+export type CPUState = 'recovered' | 'heavy';
+
+export interface CPUPeriod {
+  state: CPUState;
+  startTime: string | undefined;
+  endTime: string | undefined;
+}
+
+class CpuAlertService {
+  private state$: BehaviorSubject<CPUState> = new BehaviorSubject<CPUState>('recovered');
+  private statePeriod$: Subject<CPUPeriod> = new Subject<CPUPeriod>();
+  private firstHeavyLoad: CPULoad | null = null;
+  private firstRecoveredLoad: CPULoad | null = null;
+
+  getState(): CPUState {
+    return this.state$.getValue();
+  }
+
+  getState$(): Observable<CPUState> {
+    return this.state$.asObservable();
+  }
+
+  getStatePeriod$(): Observable<CPUPeriod> {
+    return this.statePeriod$.asObservable();
+  }
+
+  init(state: CPUState, firstHeavyLoad: CPULoad | null, firstRecoveredLoad: CPULoad | null) {
+    this.state$.next(state);
+    this.firstHeavyLoad = firstHeavyLoad;
+    this.firstRecoveredLoad = firstRecoveredLoad;
+  }
+
+  reset() {
+    this.state$.next('recovered');
+    this.firstHeavyLoad = null;
+    this.firstRecoveredLoad = null;
+  }
+
+  onData(cpuLoad: CPULoad) {
+    const state = this.state$.getValue();
+    if (state === 'recovered') {
+      // Detection of rising edge
+      if (cpuLoad.average >= 1) {
+        // Keep first heavy load detection
+        if (!this.firstHeavyLoad) {
+          this.firstHeavyLoad = cpuLoad;
+        }
+        // Detect if the heavy state lasted for more than 2 minutes without interruption
+        if (new Date(cpuLoad.time).getTime() - new Date(this.firstHeavyLoad.time).getTime() >= minPeriodStateDetecttion) {
+          this.state$.next('heavy');
+          // Last state change, broadcast the details
+          this.statePeriod$.next({
+            state,
+            startTime: this.firstRecoveredLoad?.time,
+            endTime: this.firstHeavyLoad.time
+          });
+        }
+      } else {
+        this.firstHeavyLoad = null;
+      }
+    } else if (state === 'heavy') {
+      // Detection of falling edge
+      if (cpuLoad.average < 1) {
+        if (!this.firstRecoveredLoad) {
+          this.firstRecoveredLoad = cpuLoad;
+        }
+
+        // Detect if the recovery state lasted for more than 2 minutes without interruption
+        if (new Date(cpuLoad.time).getTime() - new Date(this.firstRecoveredLoad.time).getTime() >= minPeriodStateDetecttion) {
+          this.state$.next('recovered');
+          // Last state change, broadcast the details
+          this.statePeriod$.next({
+            state,
+            startTime: this.firstHeavyLoad?.time,
+            endTime: this.firstRecoveredLoad.time
+          });
+        }
+      } else {
+        this.firstRecoveredLoad = null;
+      }
+    }
+  }
+}
+
+// Export the service as a singleton
+export const cpuAlertService = new CpuAlertService();

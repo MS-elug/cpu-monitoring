@@ -25,9 +25,9 @@ function CpuLoadSnapshot() {
   return (
     <div className={classes.root}>
       <Typography variant="button" display="block">
-        Actual Average Load
+        CPU Load (live)
       </Typography>
-      {cpuLoadLast ? (cpuLoadLast.average * 100).toFixed(2) + "%" : "N/A"}
+      {cpuLoadLast ? (cpuLoadLast.average).toFixed(2) : "N/A"}
       {cpuLoadTrend === '+' && <TrendingUpIcon style={{ color: 'red' }} />}
       {cpuLoadTrend === '-' && <TrendingDownIcon style={{ color: 'green' }} />}
       {cpuLoadTrend === '=' && <TrendingFlatIcon style={{ color: 'green' }} />}

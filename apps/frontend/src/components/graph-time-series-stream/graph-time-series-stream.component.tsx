@@ -58,7 +58,7 @@ function GraphTimeSeriesStream(props: Props) {
     const maxDataPoints = Math.trunc(timeWindow / timeInterval);
 
     // At initialisation, get the current time
-    const now = new Date().getTime() / 1000;
+    const now = Date.now() / 1000;
 
     // Add data to graph when a new value is emitted
     subscription.add(
