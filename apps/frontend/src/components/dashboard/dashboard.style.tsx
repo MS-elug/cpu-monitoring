@@ -13,9 +13,12 @@ export const useStyles = makeStyles((theme) => ({
     flex: 3,
     paddingTop: theme.spacing(4)
   },
+  rightSection:{
+    minWidth: '280px'
+  },
   paper: {
-    padding: theme.spacing(4),
-    borderRadius: '2rem'
+    padding: theme.spacing(2),
+    borderRadius: '1rem'
   },
   fullHeight: {
     height: '100%'
@@ -32,5 +35,9 @@ export const useStyles = makeStyles((theme) => ({
   },
   lightText: {
     color: 'white'
+  },
+  paperAlert: {
+    color: 'white',
+    backgroundColor: '#f44336'
   }
 }));

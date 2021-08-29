@@ -74,5 +74,8 @@ function compareCpuPeriodByTime(a: CPUPeriod, b: CPUPeriod) {
   return new Date(a.startTime).getTime() - new Date(b.startTime).getTime();
 }
 export const selectCpuLoadPeriodsSorted = (state: RootState) => [...state.cpuLoad.periods].sort(compareCpuPeriodByTime);
+export const selectCpuLoadPeriods = (state: RootState) => state.cpuLoad.periods;
+
+export const selectCpuLoadStatus = (state: RootState) => state.cpuLoad.status;
 
 export default cpuLoadSlice.reducer;

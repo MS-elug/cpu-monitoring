@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
 import { useStyles } from './dashboard.style';
 import CpuLoadSnapshot from '../cpu-load-snapshot/cpu-load-snapshot';
-
+import CpuLoadSummary from '../cpu-load-summary/cpu-load-summary';
 
 function Dashboard() {
   const classes = useStyles();
@@ -37,9 +37,18 @@ function Dashboard() {
             </Paper>
           </Grid>
           <Grid item>
-            <Paper className={classes.paper}>
-              <CpuLoadSnapshot></CpuLoadSnapshot>
-            </Paper>
+            <Grid container direction="column" justifyContent="center" alignItems="stretch" spacing={2}>
+              <Grid item>
+                <Paper className={clsx(classes.paper, classes.rightSection)}>
+                  <CpuLoadSnapshot></CpuLoadSnapshot>
+                </Paper>
+              </Grid>
+              <Grid item>
+                <Paper className={clsx(classes.paper, classes.rightSection)}>
+                  <CpuLoadSummary></CpuLoadSummary>
+                </Paper>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

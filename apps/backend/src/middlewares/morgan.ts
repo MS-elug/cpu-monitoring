@@ -10,8 +10,7 @@ function formatRequest(tokens: TokenIndexer<Request, Response>, req: Request, re
     status: tokens.status(req, res),
     id: tokens['id'](req, res),
     referrer: tokens['referrer'](req, res),
-    remoteAddress: tokens['remote-addr'](req, res),
-    userAgent: tokens['user-agent'](req, res)
+    remoteAddress: tokens['remote-addr'](req, res)
   };
 
   // Redirect stream to http logger
