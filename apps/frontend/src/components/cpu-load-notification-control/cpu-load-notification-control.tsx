@@ -40,7 +40,8 @@ function CpuLoadNotificationControl() {
           />
         </div>
       )}
-      {muteAlerts && (
+      
+      {displayAlerts && muteAlerts && (
         <div title="Unmute alerts">
           <VolumeOffIcon
             onClick={() => {
@@ -49,7 +50,7 @@ function CpuLoadNotificationControl() {
           />
         </div>
       )}
-      {!muteAlerts && (
+      {displayAlerts && !muteAlerts && (
         <div title="Mute alerts">
           <VolumeUpIcon
             onClick={() => {

@@ -19,7 +19,7 @@ function Dashboard() {
             <Grid container direction="column" alignItems="stretch" className={clsx(classes.fullHeight)}>
               <Grid item>
                 <Typography variant="h6" gutterBottom className={classes.lightText}>
-                  CPU Monitoring Dashboard
+                  CPU Average Load (over 1m)
                 </Typography>
               </Grid>
               <Grid item style={{ flexGrow: 1 }} className={clsx(classes.fullWidth, classes.overflowHidden)}>

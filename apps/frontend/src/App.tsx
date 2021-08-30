@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'hidden'
   },
   controls: {
+    zIndex: 9999,
     position: 'absolute',
     top: theme.spacing(1),
     right: theme.spacing(1),
