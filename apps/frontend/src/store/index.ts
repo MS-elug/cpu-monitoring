@@ -1,13 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import configSlice from './config/config-slice';
-import cpuLoadSlice from './cpu-load/cpu-load-slice';
+import { enablePersistantStore } from '../environement/environement';
+import { configSlice } from './config/config-slice';
+import { cpuLoadSlice } from './cpu-load/cpu-load-slice';
+import { setupLocalStoragePeristence } from './localstorage-persistence';
 
 const store = configureStore({
   reducer: {
-    cpuLoad: cpuLoadSlice,
-    config: configSlice
+    cpuLoad: cpuLoadSlice.reducer,
+    config: configSlice.reducer
   }
 });
+
+// Persistant store
+if (enablePersistantStore && window.localStorage) {
+  setupLocalStoragePeristence(store);
+}
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

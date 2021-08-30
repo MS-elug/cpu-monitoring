@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 // Define a type for the slice state
@@ -28,12 +28,16 @@ export const configSlice = createSlice({
     },
     unmuteAlerts: (state) => {
       state.muteAlerts = false;
+    },
+    hydrate: (state, action: PayloadAction<ConfigState>) => {
+      // Replace state by the full content of payload
+      return action.payload;
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { enableAlerts, disableAlerts,muteAlerts,unmuteAlerts } = configSlice.actions;
+export const { enableAlerts, disableAlerts, muteAlerts, unmuteAlerts, hydrate } = configSlice.actions;
 
 // Default selector to get the data
 export const selectConfig = (state: RootState) => state.config;

@@ -10,3 +10,5 @@ export const minPeriodStateDetection = 10  * 1000; // 2 minutes
 export const maxPeriodChangeStorage = 20;
 /** Define if native browser notification can be use */
 export const useBrowserNotification = true;
+/** Enable persistency of compatible store's slices*/
+export const enablePersistantStore = true;
