@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { minPeriodStateDetection } from '../environement/environement';
 import { CPUPeriod, CPUState } from '../store/cpu-load/cpu-load-slice';
 
+/** Service in charge to detect state change */
 class CpuAlertService {
   private state$: BehaviorSubject<CPUState> = new BehaviorSubject<CPUState>('initial');
   private statePeriod$: Subject<CPUPeriod> = new Subject<CPUPeriod>();

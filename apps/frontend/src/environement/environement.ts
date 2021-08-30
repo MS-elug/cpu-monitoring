@@ -8,3 +8,5 @@ export const monitoringPeriod = 1 * 1000; // 10 second
 export const minPeriodStateDetection = 10  * 1000; // 2 minutes
 /** Maximum number of last periods to keep in memory */
 export const maxPeriodChangeStorage = 20;
+/** Define if native browser notification can be use */
+export const useBrowserNotification = true;

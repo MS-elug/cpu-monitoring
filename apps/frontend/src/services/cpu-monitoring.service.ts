@@ -3,6 +3,7 @@ import { CpuApi, CPULoad } from '@monitoring/api-client';
 import { axiosAsObservable } from '../utils/axios-as-observable';
 import { monitoringPeriod } from '../environement/environement';
 
+/** Service in charge to call the backend to get CPU Load at regular interval */
 class CpuMonitoringService {
   /** Keep state of polling activity */
   private pollingSubcription: Subscription | null = null;

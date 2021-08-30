@@ -24,6 +24,11 @@ export const selectCpuLoadPeriodCounters = (state: RootState) => {
   }, {} as { [key in CPUState]: number });
 
   return ['recovered', 'heavy'].map((key) => {
-    return { state: key as CPUState, count: summary[key as CPUState] || 0 };
+    let count = summary[key as CPUState] || 0;
+    // Add the current state to the counter
+    if(key === state.cpuLoad.status){
+      count++;
+    }
+    return { state: key as CPUState, count};
   });
 };

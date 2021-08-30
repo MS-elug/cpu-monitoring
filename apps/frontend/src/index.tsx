@@ -14,6 +14,7 @@ import { cpuMonitoringService } from './services/cpu-monitoring.service';
 import { cpuLoadSlice } from './store/cpu-load/cpu-load-slice';
 import { cpuAlertService } from './services/cpu-alert.service';
 import { debugMode, monitoringPeriod } from './environement/environement';
+import { notificationService } from './services/notification.service';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,6 +28,10 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+
+// ------------------------------------------
+// SERVICES INITIALIZATION
 
 // Automatically start the monitoring on start
 cpuMonitoringService.startMonitoring();
@@ -44,6 +49,9 @@ cpuAlertService.getState$().subscribe((status) => {
 cpuAlertService.getStatePeriod$().subscribe((period) => {
   store.dispatch(cpuLoadSlice.actions.pushPeriod(period));
 });
+
+// Register the notification service
+notificationService.registerNativeNotificationATStartup();
 
 // Some debug commands for local development
 if (debugMode) {

@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
+import configSlice from './config/config-slice';
 import cpuLoadSlice from './cpu-load/cpu-load-slice';
 
 const store = configureStore({
   reducer: {
-    cpuLoad: cpuLoadSlice
+    cpuLoad: cpuLoadSlice,
+    config: configSlice
   }
 });
 

@@ -1,0 +1,5 @@
+Sounds are provided under a Creative Commons Attribution license.
+
+Sources: 
+* alert.mp3, alert.ogg => https://notificationsounds.com/sound-effects/i-saw-you-374 
+* notification.mp3, notification.ogg => https://notificationsounds.com/standard-ringtones/oringz-w427-371 
