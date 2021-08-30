@@ -4,11 +4,13 @@ import type { RootState } from '../index';
 // Define a type for the slice state
 type ConfigState = {
   displayAlerts: boolean;
+  muteAlerts: boolean;
 };
 
 // Define the initial state
 const initialState: ConfigState = {
-  displayAlerts: true
+  displayAlerts: true,
+  muteAlerts: false
 };
 
 export const configSlice = createSlice({
@@ -20,18 +22,28 @@ export const configSlice = createSlice({
     },
     disableAlerts: (state) => {
       state.displayAlerts = false;
+    },
+    muteAlerts: (state) => {
+      state.muteAlerts = true;
+    },
+    unmuteAlerts: (state) => {
+      state.muteAlerts = false;
     }
   }
 });
 
 // Action creators are generated for each case reducer function
-export const { enableAlerts, disableAlerts } = configSlice.actions;
+export const { enableAlerts, disableAlerts,muteAlerts,unmuteAlerts } = configSlice.actions;
 
 // Default selector to get the data
 export const selectConfig = (state: RootState) => state.config;
 
 export const selectConfigDisplayAlerts = (state: RootState) => {
   return selectConfig(state).displayAlerts;
+};
+
+export const selectConfigMuteAlerts = (state: RootState) => {
+  return selectConfig(state).muteAlerts;
 };
 
 export default configSlice.reducer;

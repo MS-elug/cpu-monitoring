@@ -4,7 +4,7 @@ import Alert, { Color } from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import { notificationService } from '../../services/notification.service';
 import { useAppSelector } from '../../store/hooks';
-import { selectConfigDisplayAlerts } from '../../store/config/config-slice';
+import { selectConfigDisplayAlerts, selectConfigMuteAlerts } from '../../store/config/config-slice';
 import { skip } from 'rxjs/operators';
 
 interface AlertMessage {
@@ -22,11 +22,12 @@ function playAudio(audioURI: string) {
 function CpuLoadAlert() {
   // State to store snacl bar message display
   const [message, setMessage] = useState<AlertMessage | undefined>();
-  const alertEnabled = useAppSelector(selectConfigDisplayAlerts);
+  const displayAlerts = useAppSelector(selectConfigDisplayAlerts);
+  const muteAlerts = useAppSelector(selectConfigMuteAlerts);
 
   useEffect(() => {
     // If alerts are disabled, exit
-    if (!alertEnabled) {
+    if (!displayAlerts) {
       setMessage(undefined);
       return;
     }
@@ -54,7 +55,7 @@ function CpuLoadAlert() {
           setMessage(msg);
 
           // Play sound
-          if (audioUrl) {
+          if (!muteAlerts && audioUrl) {
             playAudio(audioUrl);
           }
         }
@@ -63,7 +64,7 @@ function CpuLoadAlert() {
     return () => {
       subcription.unsubscribe();
     };
-  }, [alertEnabled]);
+  }, [displayAlerts, muteAlerts]);
 
   const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
     if (!message || reason === 'clickaway') {
