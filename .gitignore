@@ -2,7 +2,6 @@
 
 # Yarn 2
 .yarn/*
-**/.yarn/**/*
 !.yarn/patches
 !.yarn/releases
 !.yarn/plugins
