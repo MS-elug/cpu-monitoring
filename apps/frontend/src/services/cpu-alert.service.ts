@@ -10,6 +10,8 @@ class CpuAlertService {
   private firstHeavyLoad: CPULoad | null = null;
   private firstRecoveredLoad: CPULoad | null = null;
 
+  private minPeriodStateDetection = minPeriodStateDetection;
+
   getState(): CPUState {
     return this.state$.getValue();
   }
@@ -32,6 +34,11 @@ class CpuAlertService {
     this.state$.next('initial');
     this.firstHeavyLoad = null;
     this.firstRecoveredLoad = null;
+    this.minPeriodStateDetection = minPeriodStateDetection;
+  }
+
+  updateConfig(minPeriodStateDetection: number) {
+    this.minPeriodStateDetection = minPeriodStateDetection;
   }
 
   onData(cpuLoad: CPULoad) {

@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build": "lerna run build",
-    "start": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start:dev\" \"yarn workspace @monitoring/backend start\"",
+    "start": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start\" \"yarn workspace @monitoring/backend start\"",
     "start:dev": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start:dev\" \"yarn workspace @monitoring/backend start:dev\""
   },
   "dependencies": {

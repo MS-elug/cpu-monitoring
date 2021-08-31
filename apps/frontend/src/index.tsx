@@ -3,11 +3,8 @@ import ReactDOM from 'react-dom';
 import { CssBaseline } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { defaultTheme } from './themes/default/default.theme';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import '@fontsource/roboto';
-
 import { Provider } from 'react-redux';
 import store from './store';
 import { cpuMonitoringService } from './services/cpu-monitoring.service';
@@ -15,6 +12,10 @@ import { cpuLoadSlice } from './store/cpu-load/cpu-load-slice';
 import { cpuAlertService } from './services/cpu-alert.service';
 import { debugMode, monitoringPeriod } from './environement/environement';
 import { notificationService } from './services/notification.service';
+
+import './index.css';
+import '@fontsource/roboto';
+
 
 ReactDOM.render(
   <React.StrictMode>
@@ -28,7 +29,6 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById('root')
 );
-
 
 // ------------------------------------------
 // SERVICES INITIALIZATION
@@ -44,8 +44,8 @@ cpuMonitoringService.getCpuLoad$().subscribe((cpuLoad) => {
 
 // Link the CPU Alert service with the store
 cpuAlertService.getState$().subscribe((status) => {
-  store.dispatch(cpuLoadSlice.actions.setStatus(status));
-});
+    store.dispatch(cpuLoadSlice.actions.setStatus(status));
+  });
 cpuAlertService.getStatePeriod$().subscribe((period) => {
   store.dispatch(cpuLoadSlice.actions.pushPeriod(period));
 });

@@ -30,10 +30,12 @@
     "regression": "^2.0.1",
     "rickshaw": "^1.7.1",
     "rxjs": "^7.3.0",
+    "serve": "^12.0.0",
     "typescript": "^4.3.5",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "start": "serve -s build -l 3000 ",
     "start:dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

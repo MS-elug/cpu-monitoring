@@ -35,7 +35,7 @@ function CpuLoadSnapshot() {
       {cpuLoadLast ? (cpuLoadLast.average).toFixed(3) : "N/A"}
       {cpuLoadTrend === '+' && <TrendingUpIcon style={{ color: 'red' }} />}
       {cpuLoadTrend === '-' && <TrendingDownIcon style={{ color: 'green' }} />}
-      {cpuLoadTrend === '=' && <TrendingFlatIcon style={{ color: 'green' }} />}
+      {cpuLoadTrend === '=' && <TrendingFlatIcon style={{ color: 'steelblue' }} />}
     </div>
   );
 }

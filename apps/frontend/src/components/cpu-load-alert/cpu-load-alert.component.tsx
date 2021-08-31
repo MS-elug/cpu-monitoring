@@ -6,6 +6,7 @@ import { notificationService } from '../../services/notification.service';
 import { useAppSelector } from '../../store/hooks';
 import { selectConfigDisplayAlerts, selectConfigMuteAlerts } from '../../store/config/config-slice';
 import { skip } from 'rxjs/operators';
+import { selectCpuLoadStatus } from '../../store/cpu-load/cpu-load-slice';
 
 interface AlertMessage {
   open: boolean;
@@ -13,6 +14,7 @@ interface AlertMessage {
   severity: Color;
 }
 
+// Register audio files and player
 const audioAlertURI = '/assets/sounds/alert.mp3';
 const audioNotificationURI = '/assets/sounds/notification.mp3';
 function playAudio(audioURI: string) {
@@ -20,10 +22,11 @@ function playAudio(audioURI: string) {
 }
 
 function CpuLoadAlert() {
-  // State to store snacl bar message display
+  // State to control snackbar message display
   const [message, setMessage] = useState<AlertMessage | undefined>();
   const displayAlerts = useAppSelector(selectConfigDisplayAlerts);
   const muteAlerts = useAppSelector(selectConfigMuteAlerts);
+  const cpuLoadStatus = useAppSelector(selectCpuLoadStatus);
 
   useEffect(() => {
     // If alerts are disabled, exit
@@ -32,39 +35,30 @@ function CpuLoadAlert() {
       return;
     }
 
-    const subcription = cpuAlertService
-      .getState$()
-      .pipe(skip(1)) // Skip the first item because it's a behavior subject, we are interested by state change only
-      .subscribe((status) => {
-        let msg: AlertMessage | undefined;
-        let audioUrl: string | undefined;
-        if (status === 'heavy') {
-          msg = { open: true, text: `ALERT - CPU heavy load detection`, severity: 'error' };
-          audioUrl = audioAlertURI;
-        } else if (status === 'recovered') {
-          msg = { open: true, text: `ALERT - CPU recovered from heavy load`, severity: 'success' };
-          audioUrl = audioNotificationURI;
-        }
+    let msg: AlertMessage | undefined;
+    let audioUrl: string | undefined;
+    if (cpuLoadStatus === 'heavy') {
+      msg = { open: true, text: `ALERT - CPU heavy load detection`, severity: 'error' };
+      audioUrl = audioAlertURI;
+    } else if (cpuLoadStatus === 'recovered') {
+      msg = { open: true, text: `ALERT - CPU recovered from heavy load`, severity: 'success' };
+      audioUrl = audioNotificationURI;
+    }
 
-        if (msg) {
-          // Use browser notification
-          if (notificationService.enabled) {
-            notificationService.notify('CPU MONITORING ALERT', { body: msg.text });
-          }
-          // Use UI snackbar
-          setMessage(msg);
+    if (msg) {
+      // Use browser notification
+      if (notificationService.enabled) {
+        notificationService.notify('CPU MONITORING ALERT', { body: msg.text });
+      }
+      // Display alert in a UI snackbar
+      setMessage(msg);
 
-          // Play sound
-          if (!muteAlerts && audioUrl) {
-            playAudio(audioUrl);
-          }
-        }
-      });
-
-    return () => {
-      subcription.unsubscribe();
-    };
-  }, [displayAlerts, muteAlerts]);
+      // Play sound
+      if (!muteAlerts && audioUrl) {
+        playAudio(audioUrl);
+      }
+    }
+  }, [displayAlerts, muteAlerts, cpuLoadStatus]);
 
   const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
     if (!message || reason === 'clickaway') {

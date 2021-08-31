@@ -41,6 +41,15 @@ function expectRunner(testData: CPULoadTestData[]) {
   }
 }
 
+beforeEach(() => {
+  cpuAlertService.updateConfig(2*60*1000);
+});
+
+afterEach(() => {
+  cpuAlertService.reset();
+});
+
+
 it('shoud detect heavy load status', () => {
   cpuAlertService.init('recovered', null, null);
 

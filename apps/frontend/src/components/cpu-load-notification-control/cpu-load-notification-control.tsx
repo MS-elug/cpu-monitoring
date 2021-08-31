@@ -22,7 +22,7 @@ function CpuLoadNotificationControl() {
   return (
     <div className={classes.root}>
       {!displayAlerts && (
-        <div title="Alerts not enabled, click here to activate">
+        <div title="Enable alerts">
           <NotificationsOffIcon
             onClick={() => {
               dispatch(configSlice.actions.enableAlerts());
@@ -32,7 +32,7 @@ function CpuLoadNotificationControl() {
       )}
 
       {displayAlerts && (
-        <div title="Alerts enabled, click here to disable">
+        <div title="Disable alerts">
           <NotificationsActiveIcon
             onClick={() => {
               dispatch(configSlice.actions.disableAlerts());
