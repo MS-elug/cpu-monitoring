@@ -12,47 +12,43 @@ function Dashboard() {
   const classes = useStyles();
 
   return (
-    <Grid container direction="column" alignItems="stretch" className={clsx(classes.dashboard, classes.fullHeight)}>
-      <Grid item xs={12} className={classes.cpuLoadSection}>
-        <Grid container direction="row" justifyContent="center" alignItems="flex-start" className={classes.fullHeight}>
-          <Grid item xs={8} className={clsx(classes.fullHeight, classes.container)}>
-            <Grid container direction="column" alignItems="stretch" className={clsx(classes.fullHeight)}>
-              <Grid item>
-                <Typography variant="h6" gutterBottom className={classes.lightText}>
-                  CPU Average Load (over 1m)
-                </Typography>
-              </Grid>
-              <Grid item style={{ flexGrow: 1 }} className={clsx(classes.fullWidth, classes.overflowHidden)}>
-                <CpuLoadTimeSeries className={classes.fullHeight}></CpuLoadTimeSeries>
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} className={classes.cpuLoadDetailsSection}>
-        <Grid container direction="row" justifyContent="center" alignItems="flex-start" spacing={2}>
-          <Grid item>
-            <Paper className={classes.paper}>
-              <CpuLoadTable></CpuLoadTable>
-            </Paper>
-          </Grid>
-          <Grid item>
-            <Grid container direction="column" justifyContent="center" alignItems="stretch" spacing={2}>
-              <Grid item>
-                <Paper className={clsx(classes.paper, classes.rightSection)}>
-                  <CpuLoadSnapshot></CpuLoadSnapshot>
-                </Paper>
-              </Grid>
-              <Grid item>
-                <Paper className={clsx(classes.paper, classes.rightSection)}>
-                  <CpuLoadSummary></CpuLoadSummary>
-                </Paper>
+    <div className={classes.dashboard}>
+      <div className={classes.topSection}>
+        <div className={clsx(classes.container, classes.graphBox)}>
+          <Typography variant="h6" gutterBottom className={classes.lightText}>
+            CPU Average Load (over 1m)
+          </Typography>
+          <div style={{ flexGrow: 1, flexBasis: 0 }}>
+            <CpuLoadTimeSeries className={classes.fullHeight}></CpuLoadTimeSeries>
+          </div>
+        </div>
+      </div>
+      <div className={classes.bottomSection}>
+        <div className={clsx(classes.container, classes.dataBox)}>
+          <Grid container direction="row" justifyContent="space-between" alignItems="stretch" spacing={2}>
+            <Grid item xs={12} lg={3}>
+              <Grid container direction="row" justifyContent="space-between" alignItems="stretch" spacing={2}>
+                <Grid item xs={6} lg={12}>
+                  <Paper className={clsx(classes.paper)}>
+                    <CpuLoadSnapshot></CpuLoadSnapshot>
+                  </Paper>
+                </Grid>
+                <Grid item xs={6} lg={12}>
+                  <Paper className={clsx(classes.paper)}>
+                    <CpuLoadSummary></CpuLoadSummary>
+                  </Paper>
+                </Grid>
               </Grid>
             </Grid>
+            <Grid item xs={12} lg={9}>
+              <Paper className={classes.paper}>
+                <CpuLoadTable></CpuLoadTable>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+        </div>
+      </div>
+    </div>
   );
 }
 

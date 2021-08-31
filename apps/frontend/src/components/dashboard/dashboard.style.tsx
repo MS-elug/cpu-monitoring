@@ -1,37 +1,48 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
-  dashboard: {},
-  cpuLoadSection: {
+  dashboard: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    width: '100%'
+  },
+  topSection: {
+    flexGrow: 1,
+    flexBasis: 0,
     backgroundColor: '#252f3e',
+    display: 'flex',
+    justifyContent: 'center',
+    paddingBottom: theme.spacing(2)
+  },
+  graphBox: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
+  bottomSection: {
+    flexGrow: 2,
+    flexBasis: 0,
+    display: 'flex',
+    justifyContent: 'center',
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    flex: 2,
-    overflow: 'hidden'
+    paddingBottom: theme.spacing(2)
   },
-  cpuLoadDetailsSection: {
-    flex: 3,
-    paddingTop: theme.spacing(4)
+  dataBox: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
-  rightSection:{
-    minWidth: '280px'
+  container: {
+    width: '80%',
+    maxWidth: '960px'
   },
   paper: {
     padding: theme.spacing(2),
-    borderRadius: '1rem'
+    borderRadius: '1rem',
+    minHeight: '100px'
   },
   fullHeight: {
     height: '100%'
-  },
-  fullWidth: {
-    width: '100%'
-  },
-  container: {
-    maxWidth: '960px',
-    width: '100%'
-  },
-  overflowHidden: {
-    overflow: 'hidden'
   },
   lightText: {
     color: 'white'
