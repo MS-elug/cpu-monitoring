@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../index';
 
 // Define a type for the slice state
-type ConfigState = {
+export type ConfigState = {
   displayAlerts: boolean;
   muteAlerts: boolean;
 };

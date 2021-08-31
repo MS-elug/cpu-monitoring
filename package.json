@@ -6,8 +6,9 @@
     "packages/*"
   ],
   "scripts": {
-    "start:dev": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start:dev\" \"yarn workspace @monitoring/backend start:dev\"",
-    "build": "lerna run build"
+    "build": "lerna run build",
+    "start": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start:dev\" \"yarn workspace @monitoring/backend start\"",
+    "start:dev": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start:dev\" \"yarn workspace @monitoring/backend start:dev\""
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.17.0",

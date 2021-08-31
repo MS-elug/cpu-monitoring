@@ -15,7 +15,7 @@ export interface CPUPeriod {
 }
 
 // Define a type for the slice state
-type CPULoadState = {
+export type CPULoadState = {
   data: CPULoad[];
   periods: CPUPeriod[];
   status: CPUState;
