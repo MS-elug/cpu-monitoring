@@ -12,14 +12,20 @@ Alerts activation is managed by the user.
   <img width="700" align="center" src="./docs/demo.gif" alt="demo"/>
 </p>
 
-Product requirements:
+## Features
 
-- Minimal resolution:
+- Display time series CPU Average load on a 10s period with a 10 minute window
+- Display current CPU average load and trend
+- Store history of Heavy & Recovered CPU periods
+- Visual and Sound alerts when CPU average load is changing from 'heavy' to 'recovery'
+
+Learn more about CPU load here on [Wikipedia](https://en.wikipedia.org/wiki/Load_%28computing%29)
+
+## Product requirements
+
 - Recommended resolution: > 1024px Width & >1180px height
 - Browser support: Last N-1 and N versions for Chrome, Edge, Firefox and Safari
 - OS Support: Windows, Linux, MacOS
-
-Learn more about CPU load here on [Wikipedia](https://en.wikipedia.org/wiki/Load_%28computing%29)
 
 ## Architecture
 
@@ -38,7 +44,7 @@ Project structure:
 The application is splitted in 2 apps and 2 packages:
 
 - A [Backend](./apps/backend) in NodeJs & Typescript: in charge to collect the CPU information on the node it is running and deploy HTTP REST API to make this information public
-- A [Frontend](./apps/frontend) written with React + Redux & Typescript, the browser based application in charge to regularly collect the CPU information from the local Backend node and display this information to user
+- A [Frontend](./apps/frontend) web application written with React + Redux & Typescript, in charge to regularly collect the CPU information from the local Backend node and display this information to user
 - A REST API interface, documented was an [OpenApi specification](./packages/openapi/monitoring-api.yml)
 - An Axios & Typescript [Client API project](./packages/api-client) generated using an OpenApi code generator from the OpenApi specification. This project generates Typescript interfaces and client api for both the backend and frontend.
 
@@ -84,16 +90,29 @@ yarn test
 
 This PoC is not fully qualified to be run in a production environement yet. Here is a list of items to review/implement:
 
-- Performance-MemoryLeaks: If this application is intended to monitor a CPU average continuously (24/24h) then both the backend and frontend have to tested about memory leaks on a long period. It might also be a good to implement an automatic and regular restart of backend with sh script, and automatical reload of the frontend page (To be noted, today the frontend doesn't retain the previous data after a refresh, this would be required for this implementation).
-- Performance-Stability: A process watcher should be put in place to make sure the backend automatically restart after a crash.
-- Design: Review of the PoC design should be done with a UX team
-- Stability: Fix all the known bugs (ref section below)
-- Test: Coverage is not satisfying yet, for a production release it's recommended to improve the coverage rate.
-- Test: E2E testing scenarios are missing and should be implemented, there is only unit testing of components.
+- **Performance-MemoryLeaks**: If this application is intended to monitor a CPU average continuously (24/24h) then both the backend and frontend have to tested about memory leaks on a long period. It might also be a good to implement an automatic and regular restart of backend with sh script, and automatical reload of the frontend page (To be noted, today the frontend doesn't retain the previous data after a refresh, this would be required for this implementation).
+- **Performance-Stability**: A process watcher should be put in place to make sure the backend automatically restart after a crash.
+- **Design**: The PoC design should be reviewed by a UX team
+- **Stability**: Fix all the known bugs (ref section below)
+- **Test**: Coverage is not satisfying yet, for a production release it's recommended to improve the coverage rate.
+- **Test**: E2E testing scenarios are missing and should be implemented, there is only unit testing of components.
+- **Security**: The monitoring data can be a sensible information depending on the business case, that is why security aspects should be considered and reviewed. For instance have a authentication service to access the backend API, opening the port to the loopback address only etc... Also for the frontend part it is usually recommended to implement Content-Security-Policy (CSP) to proctect the web application against malicious scripting or attacks (eg: a library like [helmet](https://helmetjs.github.io/))
+- **Configuration**: The PoC contains a very limited capability of user customization (ref frontend redux config store). Some other configuration are "hardcoded" (like refresh period and time window) in [environement.ts](apps\frontend\src\environement\environement.ts) and thus it might be interesing to propose this configuration to the user (To be reviewed with Business teams).
+- **Maintenance capability**: In order to ease the maintenance, it would be great to propose a feature to report the logs automatically (eg: [Datadog logs](https://docs.datadoghq.com/fr/logs/)) or manually (with a local dump of logs that user can attach to maintenance ticket).
+
+## Features propositions
+
+Below a list of feature propsals for the business team:
+
+- **I18N**: Localized application to support multiple languages and locales
+- **UX**: Display the periods in the time series chart with different colors
+- **UX**: Selection of CPU period and highlight the period in the time series chart
+- **Processes**: It could be interesting to propose more information to the user, for instance to have a details of the processes being executed by the CPU, like [top](https://man7.org/linux/man-pages/man1/top.1.html)
 
 ## Known bugs
 
-- Bugs: When the first alert is shown to user, there is a warning "findDOMNode is deprecated in StrictMode" coming from the use of Snackbar component, however the issue is known and will be fixed by the community soon in material-ui v5 [#13394](https://github.com/mui-org/material-ui/issues/13394). A library update should be done before a load in production, despite the current warning is not a blocker.
+- **Material-ui |  findDOMNode deprecated**: When the first alert is shown to user, there is a warning "findDOMNode is deprecated in StrictMode" coming from the use of Snackbar component, however the issue is known and will be fixed by the community soon in material-ui v5 [#13394](https://github.com/mui-org/material-ui/issues/13394). A library update should be done before a load in production, despite the current warning is not a blocker.
+- **rickshaw-lib | production build mangle issue**: I discovered at the late stage of the developement that the frontend application doesn't start from a production build. After investigating and debugging the library codebase I figured out there is a mangle issue in at runtime in [Rickshaw.Graph.Renderer.Line.js#L9](https://github.com/shutterstock/rickshaw/blob/10ed07db7fa03a3667a276d55514c999e8c9ab72/src/js/Rickshaw.Graph.Renderer.Line.js#L9) due to this piece of code in [Rickshaw.Class.js#L175](https://github.com/shutterstock/rickshaw/blob/10ed07db7fa03a3667a276d55514c999e8c9ab72/src/js/Rickshaw.Class.js#L175). This issue is known by the community and reported here (issue #52)[https://github.com/shutterstock/rickshaw/issues/52]. For this PoC I created a "hack" (ref [config-overrides.js](./apps/frontend/config-overrides.js) file), there are 2 possibilities to solve it: First is to raise a PR for the open source project and wait its integration, Second is to replace the library with an other.
 
 ## LICENSE
 
