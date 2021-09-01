@@ -1,5 +1,6 @@
 import { createLogger, format, transports } from 'winston';
 import fs from 'fs';
+import path from 'path';
 
 // Declare root log transports
 const rootTransports = [];
@@ -24,14 +25,14 @@ if (typeof logFolder === 'string') {
   // Pipe all logs to server.log file
   rootTransports.push(
     new transports.File({
-      filename: 'app.log',
+      filename: path.join(logFolder,'app.log'),
       format: format.combine(format.timestamp(), format.json())
     })
   );
 
   rootTransportsForExpections.push(
     new transports.File({
-      filename: 'expection.log',
+      filename: path.join(logFolder,'expection.log'),
       format: format.combine(format.timestamp(), format.json())
     })
   );

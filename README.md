@@ -126,7 +126,9 @@ To start the app for a developer environement (with automatic watch of the files
 yarn start:dev
 ```
 
-To start the app for a 'production-like' environement
+Open the application from `http://localhost:3000/`
+
+Alternatively to start the app for a 'production-like' environement
 
 ```sh
 yarn start
