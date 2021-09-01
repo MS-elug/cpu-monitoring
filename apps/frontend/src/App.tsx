@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import Dashboard from './components/dashboard/dashboard.component';
 import { makeStyles } from '@material-ui/core/styles';
 import CpuLoadAlert from './components/cpu-load-alert/cpu-load-alert.component';
-import CpuLoadNotificationControl from './components/cpu-load-notification-control/cpu-load-notification-control';
+import CpuLoadNotificationControl from './components/cpu-load-notification-control/cpu-load-notification-control.component';
 
 const useStyles = makeStyles((theme) => ({
   body: {

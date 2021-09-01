@@ -5,8 +5,8 @@ import CpuLoadTable from '../cpu-load-table/cpu-load-table.component';
 import clsx from 'clsx';
 import { Typography } from '@material-ui/core';
 import { useStyles } from './dashboard.style';
-import CpuLoadSnapshot from '../cpu-load-snapshot/cpu-load-snapshot';
-import CpuLoadSummary from '../cpu-load-summary/cpu-load-summary';
+import CpuLoadSnapshot from '../cpu-load-snapshot/cpu-load-snapshot.component';
+import CpuLoadSummary from '../cpu-load-summary/cpu-load-summary.component';
 
 function Dashboard() {
   const classes = useStyles();
