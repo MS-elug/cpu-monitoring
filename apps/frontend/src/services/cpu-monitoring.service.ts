@@ -11,7 +11,7 @@ class CpuMonitoringService {
   /** private subject for cpu load data */
   private $cpuLoad: Subject<CPULoad> = new Subject();
 
-  private cpuApi = new CpuApi();
+  private cpuApi: CpuApi = new CpuApi();
 
   getCpuLoad$() {
     return this.$cpuLoad.asObservable();
@@ -23,7 +23,7 @@ class CpuMonitoringService {
   }
 
   startMonitoring(): void {
-    // Check is state change
+    // Check polling is already started
     if (this.pollingSubcription !== null) {
       return;
     }
@@ -55,13 +55,14 @@ class CpuMonitoringService {
   }
 
   stopMonitoring(): void {
-    // Check is state change
+    // Check polling is already started
     if (this.pollingSubcription === null) {
       return;
     }
     this.pollingSubcription.unsubscribe();
     this.pollingSubcription = null;
   }
+
 }
 
 // Export the service as a singleton

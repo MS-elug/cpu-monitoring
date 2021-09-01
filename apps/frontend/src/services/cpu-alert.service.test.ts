@@ -50,7 +50,7 @@ afterEach(() => {
 });
 
 
-it('shoud detect heavy load status', () => {
+test('shoud detect heavy load status', () => {
   cpuAlertService.init('recovered', null, null);
 
   const testData: CPULoadTestData[] = [
@@ -68,7 +68,7 @@ it('shoud detect heavy load status', () => {
   expectRunner(testData);
 });
 
-it('shoud not detect heavy load status', () => {
+test('shoud not detect heavy load status', () => {
   cpuAlertService.init('recovered', null, null);
 
   const testData: CPULoadTestData[] = [
@@ -80,7 +80,7 @@ it('shoud not detect heavy load status', () => {
   expectRunner(testData);
 });
 
-it('shoud not change initial state to recovery load status', () => {
+test('shoud not change initial state to recovery load status', () => {
   cpuAlertService.init('initial', null, null);
 
   const testData: CPULoadTestData[] = [
@@ -93,7 +93,7 @@ it('shoud not change initial state to recovery load status', () => {
   expectRunner(testData);
 });
 
-it('shoud detect recovery load status', () => {
+test('shoud detect recovery load status', () => {
   cpuAlertService.init('heavy', { time: '2021-09-29T10:01:00.000Z', average: 1.2 }, null);
 
   const testData: CPULoadTestData[] = [
@@ -111,7 +111,7 @@ it('shoud detect recovery load status', () => {
   expectRunner(testData);
 });
 
-it('shoud not detect recovery load status', () => {
+test('shoud not detect recovery load status', () => {
   cpuAlertService.init('heavy', { time: '2021-09-29T10:01:00.000Z', average: 1.2 }, null);
 
   const testData: CPULoadTestData[] = [
@@ -123,7 +123,7 @@ it('shoud not detect recovery load status', () => {
   expectRunner(testData);
 });
 
-it('shoud detect several load status change', () => {
+test('shoud detect several load status change', () => {
   cpuAlertService.init('initial', null, null);
 
   const testData: CPULoadTestData[] = [

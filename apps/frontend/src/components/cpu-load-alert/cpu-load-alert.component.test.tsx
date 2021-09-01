@@ -38,7 +38,7 @@ test('display and sound alert for recovered load', () => {
   const store = storeBuilder(preloadedStoreState);
 
   jest.spyOn(notificationService, 'notify');
-  jest.spyOn(audioService, 'play').mockReturnValue(true);;
+  jest.spyOn(audioService, 'play').mockReturnValue(true);
 
   render(<CpuLoadAlert />, store);
 
@@ -56,13 +56,12 @@ test('display and sound alert for recovered load', () => {
   expect(audioService.play).toHaveBeenCalledWith('notification');
 });
 
-
 test('display and sound alert for heavy load alert after a recovery', () => {
   const preloadedStoreState = { cpuLoad: { data: [], periods: [], status: 'recovered' }, config: { displayAlerts: true, muteAlerts: false } } as IPreloadedState;
   const store = storeBuilder(preloadedStoreState);
 
   jest.spyOn(notificationService, 'notify');
-  jest.spyOn(audioService, 'play').mockReturnValue(true);;
+  jest.spyOn(audioService, 'play').mockReturnValue(true);
 
   render(<CpuLoadAlert />, store);
 
