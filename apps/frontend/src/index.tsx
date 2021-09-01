@@ -15,7 +15,7 @@ import { notificationService } from './services/notification.service';
 
 import './index.css';
 import '@fontsource/roboto';
-
+import { documentTitleService } from './services/document-title.service';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -40,12 +40,14 @@ cpuMonitoringService.startMonitoring();
 cpuMonitoringService.getCpuLoad$().subscribe((cpuLoad) => {
   store.dispatch(cpuLoadSlice.actions.pushData(cpuLoad));
   cpuAlertService.onData(cpuLoad);
+  // Update the page title
+  documentTitleService.update('CPU: ' + cpuLoad.average.toFixed(3));
 });
 
 // Link the CPU Alert service with the store
 cpuAlertService.getState$().subscribe((status) => {
-    store.dispatch(cpuLoadSlice.actions.setStatus(status));
-  });
+  store.dispatch(cpuLoadSlice.actions.setStatus(status));
+});
 cpuAlertService.getStatePeriod$().subscribe((period) => {
   store.dispatch(cpuLoadSlice.actions.pushPeriod(period));
 });

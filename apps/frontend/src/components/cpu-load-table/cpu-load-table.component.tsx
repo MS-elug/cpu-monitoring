@@ -1,5 +1,4 @@
 import { TablePagination, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -12,6 +11,7 @@ import { useAppSelector } from '../../store/hooks';
 import { useMemo, useState } from 'react';
 import { CPUPeriod, CPUState, selectCpuLoadStatus } from '../../store/cpu-load/cpu-load-slice';
 import clsx from 'clsx';
+import { useStyles } from './cpu-load-table.component.style';
 
 export const stateLabelMapping: { [key in CPUState]: string } = {
   heavy: 'Heavy Load',
@@ -26,6 +26,7 @@ interface Row {
   endDate: string;
   duration: string;
 }
+/** Convert cpu period data to row data */
 function createData(period: CPUPeriod): Row {
   const startDate = period.startTime ? new Date(period.startTime) : undefined;
   const endDate = period.endTime ? new Date(period.endTime) : undefined;
@@ -40,29 +41,9 @@ function createData(period: CPUPeriod): Row {
   };
 }
 
-export const useStyles = makeStyles((theme) => ({
-  root: {
-    lineHeight: '2rem',
-    fontSize: '2rem'
-  },
-  table: {
-    minWidth: 650
-  },
-  explanations: {
-    marginTop: theme.spacing(1),
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1)
-  },
-  heavyLoadRow: {
-    backgroundColor: 'rgb(253, 236, 234)'
-  },
-  recoveredLoadRow: {
-    backgroundColor: 'rgb(237, 247, 237)'
-  }
-}));
-
 function CpuLoadTable() {
+  const classes = useStyles();
+  
   const cpuLoadStatus = useAppSelector(selectCpuLoadStatus);
   const cpuLoadPeriods = useAppSelector(selectCpuLoadPeriodsSorted);
 
@@ -80,9 +61,8 @@ function CpuLoadTable() {
     rows.unshift(createData({ state: cpuLoadStatus, startTime: rows.length !== 0 ? periodsReversed[0].endTime : undefined, endTime: undefined }));
     return rows;
   }, [cpuLoadStatus, cpuLoadPeriods]);
+  // Compute the number of empty row to display when there is not enought data
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
-  const classes = useStyles();
 
   return (
     <div className={classes.root}>
@@ -121,17 +101,6 @@ function CpuLoadTable() {
       </TableContainer>
 
       <TablePagination component="div" count={rows.length} rowsPerPageOptions={[rowsPerPage]} rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage} />
-
-      <div className={classes.explanations}>
-        <Typography variant="caption" display="block">
-          (*) Explanations
-          <br />
-          - A CPU is considered under high average load when it has exceeded 1 for 2 minutes or more.
-          <br />
-          - A CPU is considered recovered from high average load when it drops below 1 for 2 minutes or more.
-          <br />- A CPU is considered in initial mode when there is not enought data to compute the state.
-        </Typography>
-      </div>
     </div>
   );
 }

@@ -46,5 +46,8 @@ export const useStyles = makeStyles((theme) => ({
   },
   lightText: {
     color: 'white'
+  },
+  explanations: {
+    marginTop: theme.spacing(2),
   }
 }));

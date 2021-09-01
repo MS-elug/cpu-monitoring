@@ -11,7 +11,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('display heavy load alert', () => {
+test('display and sound alert for heavy load', () => {
   const preloadedStoreState = { cpuLoad: { data: [], periods: [], status: 'initial' }, config: { displayAlerts: true, muteAlerts: false } } as IPreloadedState;
   const store = storeBuilder(preloadedStoreState);
 
@@ -33,7 +33,7 @@ test('display heavy load alert', () => {
   expect(audioService.play).toHaveBeenCalledWith('alert');
 });
 
-test('display recovered load alert', () => {
+test('display and sound alert for recovered load', () => {
   const preloadedStoreState = { cpuLoad: { data: [], periods: [], status: 'heavy' }, config: { displayAlerts: true, muteAlerts: false } } as IPreloadedState;
   const store = storeBuilder(preloadedStoreState);
 
@@ -57,7 +57,7 @@ test('display recovered load alert', () => {
 });
 
 
-test('display heavy load alert after a recovery', () => {
+test('display and sound alert for heavy load alert after a recovery', () => {
   const preloadedStoreState = { cpuLoad: { data: [], periods: [], status: 'recovered' }, config: { displayAlerts: true, muteAlerts: false } } as IPreloadedState;
   const store = storeBuilder(preloadedStoreState);
 

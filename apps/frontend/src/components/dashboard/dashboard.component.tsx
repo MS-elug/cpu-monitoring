@@ -44,6 +44,19 @@ function Dashboard() {
               <Paper className={classes.paper}>
                 <CpuLoadTable></CpuLoadTable>
               </Paper>
+
+              <Paper className={clsx(classes.paper, classes.explanations)}>
+                <Typography variant="button" display="block">
+                  Explanations
+                </Typography>
+                <Typography variant="caption" display="block">
+                  <ul>
+                    <li>A CPU is considered under high average load when it has exceeded 1 for 2 minutes or more.</li>
+                    <li>A CPU is considered recovered from high average load when it drops below 1 for 2 minutes or more.</li>
+                    <li>A CPU is considered in initial mode when its state hasn't change since the start of monitoring.</li>
+                  </ul>
+                </Typography>
+              </Paper>
             </Grid>
           </Grid>
         </div>

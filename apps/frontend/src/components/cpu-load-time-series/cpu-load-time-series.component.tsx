@@ -17,7 +17,7 @@ function CpuLoadTimeSeries(props: Props) {
     })
   );
 
-  return <GraphTimeSeriesStream className={className} $value={value$} valueName={'avgload'} timeInterval={monitoringPeriod} timeWindow={monitoringTimeWindow}></GraphTimeSeriesStream>;
+  return <GraphTimeSeriesStream className={className} value$={value$} valueName={'avgload'} timeInterval={monitoringPeriod} timeWindow={monitoringTimeWindow}></GraphTimeSeriesStream>;
 }
 
 export default CpuLoadTimeSeries;

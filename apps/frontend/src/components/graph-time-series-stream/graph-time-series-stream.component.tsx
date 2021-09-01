@@ -12,7 +12,7 @@ const Rickshaw = require('rickshaw');
 interface Props {
   timeWindow: number;
   timeInterval: number;
-  $value: Observable<{ x: number; y: number }>;
+  value$: Observable<{ x: number; y: number }>;
   valueName: string;
   className?: string;
 }
@@ -32,7 +32,7 @@ function configureGraph(graph: any, containerEl: HTMLDivElement) {
 /** Component to display Streamed TimeSeries  */
 function GraphTimeSeriesStream(props: Props) {
   const classes = useStyles();
-  const { $value, valueName, timeWindow, timeInterval, className } = props;
+  const { value$, valueName, timeWindow, timeInterval, className } = props;
 
   const graphContainerElRef = useRef<HTMLDivElement | null>(null);
   const chartElRef = useRef<HTMLDivElement | null>(null);
@@ -62,7 +62,7 @@ function GraphTimeSeriesStream(props: Props) {
 
     // Add data to graph when a new value is emitted
     subscription.add(
-      $value.subscribe((value) => {
+      value$.subscribe((value) => {
         const data = { [valueName]: value.y };
         graph.series.addData(data);
         graph.render();
@@ -132,7 +132,7 @@ function GraphTimeSeriesStream(props: Props) {
         chartEl.removeChild(chartEl.firstChild);
       }
     };
-  }, [$value, timeInterval, timeWindow, valueName]);
+  }, [value$, timeInterval, timeWindow, valueName]);
 
   return (
     <div ref={graphContainerElRef} className={clsx(classes.graphContainer, className)}>

@@ -5,7 +5,7 @@ import { notificationService } from '../../services/notification.service';
 import { useAppSelector } from '../../store/hooks';
 import { selectConfigDisplayAlerts, selectConfigMuteAlerts } from '../../store/config/config-slice';
 import { CPUState, selectCpuLoadStatus } from '../../store/cpu-load/cpu-load-slice';
-import { audios, audioService, AudioService } from '../../services/audio.service';
+import { audios, audioService } from '../../services/audio.service';
 
 interface AlertMessage {
   open: boolean;
