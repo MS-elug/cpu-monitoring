@@ -50,7 +50,6 @@ The application is splitted in 2 apps and 2 packages:
 
 Let's focus only on the frontend design, below the file structure:
 
-
 ```text
 . src
 ├── index.tsx                             - Default application entry point (store creation, services setup)
@@ -61,10 +60,10 @@ Let's focus only on the frontend design, below the file structure:
 │   ├── cpu-load-notification-snapshot    - Display latest CPU load value
 │   ├── cpu-load-summary                  - Display summary of CPU Phases
 │   ├── cpu-load-table                    - Display table containing all CPU Phases
-│   ├── cpu-load-time-series              - Display CPU average Load in a time series graph 
+│   ├── cpu-load-time-series              - Display CPU average Load in a time series graph
 │   ├── dashboard                         - Dashboard organizing components in page
 │   └── graph-time-series-stream          - Reusable component for time series graph
-├── environment   
+├── environment
 │   └── environement.ts                   - Configuration of the app
 ├── hooks
 │   └── useObservable                     - React hook for observable
@@ -81,7 +80,7 @@ Let's focus only on the frontend design, below the file structure:
 │   ├── index.ts                          - Root store definition
 │   └── localstorage-persistence.ts       - Utility to backup store data into local storage
 ├── themes\defaut
-│   └── default.theme.ts                  - Application Default Theme 
+│   └── default.theme.ts                  - Application Default Theme
 └── utils
     ├── axios-as-observable.tsx           - Utility to convert an axios promise into observable
     └── test-utils.tsx                    - Utility for testing
@@ -101,7 +100,7 @@ Services provide the main business logic (calling the api at regular interval, a
 
 Services and store are connected in the main application script (index.tsx).
 
-### Backend
+[<img src="./docs/archi-frontend-internal.png" alt="archi-frontend"/>](./docs/archi-frontend-internal.png)
 
 ## Prerequisites
 
@@ -166,7 +165,7 @@ Below a list of feature propsals for the business team:
 
 ## Known bugs
 
-- **Material-ui |  findDOMNode deprecated**: When the first alert is shown to user, there is a warning "findDOMNode is deprecated in StrictMode" coming from the use of Snackbar component, however the issue is known and will be fixed by the community soon in material-ui v5 [#13394](https://github.com/mui-org/material-ui/issues/13394). A library update should be done before a load in production, despite the current warning is not a blocker.
+- **Material-ui | findDOMNode deprecated**: When the first alert is shown to user, there is a warning "findDOMNode is deprecated in StrictMode" coming from the use of Snackbar component, however the issue is known and will be fixed by the community soon in material-ui v5 [#13394](https://github.com/mui-org/material-ui/issues/13394). A library update should be done before a load in production, despite the current warning is not a blocker.
 - **rickshaw-lib | production build mangle issue**: I discovered at the late stage of the developement that the frontend application doesn't start from a production build. After investigating and debugging the library codebase I figured out there is a mangle issue in at runtime in [Rickshaw.Graph.Renderer.Line.js#L9](https://github.com/shutterstock/rickshaw/blob/10ed07db7fa03a3667a276d55514c999e8c9ab72/src/js/Rickshaw.Graph.Renderer.Line.js#L9) due to this piece of code in [Rickshaw.Class.js#L175](https://github.com/shutterstock/rickshaw/blob/10ed07db7fa03a3667a276d55514c999e8c9ab72/src/js/Rickshaw.Class.js#L175). This issue is known by the community and reported here (issue #52)[https://github.com/shutterstock/rickshaw/issues/52]. For this PoC I created a "hack" (ref [config-overrides.js](./apps/frontend/config-overrides.js) file), there are 2 possibilities to solve it: First is to raise a PR for the open source project and wait its integration, Second is to replace the library with an other.
 
 ## LICENSE
