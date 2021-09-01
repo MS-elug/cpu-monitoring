@@ -21,6 +21,19 @@ function CpuLoadAlert() {
   const cpuLoadStatus = useAppSelector(selectCpuLoadStatus);
   const [previousCpuLoadStatus, setPreviousCpuLoadStatus] = useState<CPUState | undefined>();
 
+  function statusChangeDetected(previousCpuLoadStatus: CPUState | undefined, cpuLoadStatus: CPUState): boolean {
+    if (!previousCpuLoadStatus && cpuLoadStatus) {
+      setPreviousCpuLoadStatus(cpuLoadStatus);
+      return false;
+    }
+
+    if (previousCpuLoadStatus === cpuLoadStatus) {
+      return false;
+    }
+    setPreviousCpuLoadStatus(cpuLoadStatus);
+    return true;
+  }
+
   useEffect(() => {
     // If alerts are disabled, exit
     if (!displayAlerts) {
@@ -29,10 +42,7 @@ function CpuLoadAlert() {
     }
 
     // Don't react on same status update
-    if (!previousCpuLoadStatus) {
-      setPreviousCpuLoadStatus(cpuLoadStatus);
-    }
-    if (!previousCpuLoadStatus || previousCpuLoadStatus === cpuLoadStatus) {
+    if (!statusChangeDetected(previousCpuLoadStatus, cpuLoadStatus)) {
       return;
     }
 
