@@ -9,14 +9,16 @@
   ],
   "scripts": {
     "build": "lerna run build",
+    "lint": "lerna run lint",
     "start": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start\" \"yarn workspace @monitoring/backend start\"",
     "start:dev": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start:dev\" \"yarn workspace @monitoring/backend start:dev\"",
-    "test": "lerna run test"
+    "test": "cross-env CI=true lerna run test --stream"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "concurrently": "^6.2.1",
+    "cross-env": "^7.0.3",
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-prettier": "^3.3.1",
