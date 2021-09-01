@@ -48,6 +48,61 @@ The application is splitted in 2 apps and 2 packages:
 - A REST API interface, documented was an [OpenApi specification](./packages/openapi/monitoring-api.yml)
 - An Axios & Typescript [Client API project](./packages/api-client) generated using an OpenApi code generator from the OpenApi specification. This project generates Typescript interfaces and client api for both the backend and frontend.
 
+Let's focus only on the frontend design, below the file structure:
+
+
+```text
+. src
+├── index.tsx                             - Default application entry point (store creation, services setup)
+├── App.tsx                               - Main application component
+├── components
+│   ├── cpu-load-alert                    - Display alert (visual, notification and sound)
+│   ├── cpu-load-notification-control     - Display controls to configure the app
+│   ├── cpu-load-notification-snapshot    - Display latest CPU load value
+│   ├── cpu-load-summary                  - Display summary of CPU Phases
+│   ├── cpu-load-table                    - Display table containing all CPU Phases
+│   ├── cpu-load-time-series              - Display CPU average Load in a time series graph 
+│   ├── dashboard                         - Dashboard organizing components in page
+│   └── graph-time-series-stream          - Reusable component for time series graph
+├── environment   
+│   └── environement.ts                   - Configuration of the app
+├── hooks
+│   └── useObservable                     - React hook for observable
+├── services
+│   ├── audio.service.ts                  - Service to play audio file
+│   ├── cpu-alert.service.ts              - Service to analyse load data and broadcast CPU state
+│   ├── cpu-monitoring.service.ts         - Service to get CPU load data from backend at regular interval and error handling
+│   ├── document-title.service.ts         - Service to update the web page title
+│   └── notification.service.ts           - Service to trigger browser native notification
+├── store
+│   ├── config                            - Configuration State/Reducer/Selectors/Actions
+│   ├── cpu-load                          - Cpu-load State/Reducer/Selectors/Actions
+│   ├── hooks.ts                          - Redux hooks for React
+│   ├── index.ts                          - Root store definition
+│   └── localstorage-persistence.ts       - Utility to backup store data into local storage
+├── themes\defaut
+│   └── default.theme.ts                  - Application Default Theme 
+└── utils
+    ├── axios-as-observable.tsx           - Utility to convert an axios promise into observable
+    └── test-utils.tsx                    - Utility for testing
+```
+
+#### Components integration in the application
+
+[<img src="./docs/archi-frontend.png" alt="archi-frontend"/>](./docs/archi-frontend.png)
+
+#### Component/Services/Store interactions in the application
+
+The backbone of the application is made of Redux store and Services.
+
+Redux store helps to have a single place to store the whole application state so everycomponent can easilly get the application state and be updated on store changes.
+
+Services provide the main business logic (calling the api at regular interval, analysing data to trigger updates etc...).
+
+Services and store are connected in the main application script (index.tsx).
+
+### Backend
+
 ## Prerequisites
 
 In order to run this application, please make sure your environment is setup with:
