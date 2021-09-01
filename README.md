@@ -8,10 +8,14 @@ When CPU is under high average load for more than 2 minutes or when the CPU come
 
 Alerts activation is managed by the user.
 
+<p align="center">
+  <img width="700" align="center" src="./docs/demo.gif" alt="demo"/>
+</p>
+
 Product requirements:
 
 - Minimal resolution:
-- Recommended resolution:
+- Recommended resolution: > 1024px Width & >1180px height
 - Browser support: Last N-1 and N versions for Chrome, Edge, Firefox and Safari
 - OS Support: Windows, Linux, MacOS
 
@@ -40,32 +44,57 @@ The application is splitted in 2 apps and 2 packages:
 
 ## Prerequisites
 
-Have Yarn 2.0 installed
+In order to run this application, please make sure your environment is setup with:
 
-Have NodeJS 14
+- [NodeJS 14](https://nodejs.org/en/)
+- [Yarn 2.0](https://yarnpkg.com/getting-started/install)
 
-## Start the application
+## Installation
 
 First you must make sure to have executed the following commands in order at least once in order to prepare the project.
+
 ```sh
 yarn install
 yarn build
 ```
 
-To start the app for a developer environement (with automatic watch of the files and reload on change), run the command `yarn start:dev`
+## Usage
 
-To start the app for a 'production-like' environement, run `yarn start:dev`
+To start the app for a developer environement (with automatic watch of the files and reload on change)
 
-## Notes
+```sh
+yarn start:dev
+```
 
-The monitoring is made to be compatible with a TV display (so no scrolling)
+To start the app for a 'production-like' environement
 
-TO support: When backend is down, shows 0 CPU in average and trigger alerts
+```sh
+yarn start
+```
 
-On reload; call the method 'dump' of the graph to store the date, then load to restore
+PS: In dev mode, you can simulate an alert by executing the following script in the browser console: `window.heavy= !!!window.heavy; window.simulateAlert(window.heavy, 21*1000);`
 
-For performances, add memoize methods for valued redux selectors (like the sorted selctor)
+## Test
 
-There is a warning "findDOMNode is deprecated in StrictMode" coming from the use of Snackbar component, however the issue is known and will be fixed by the community soon in v5 [#13394](https://github.com/mui-org/material-ui/issues/13394).
+```sh
+yarn test
+```
 
-In dev mode, you can simulate by running the following codebase in the browser console: `window.heavy= !!!window.heavy; window.simulateAlert(window.heavy, 21*1000);`
+## Roadmap for Production
+
+This PoC is not fully qualified to be run in a production environement yet. Here is a list of items to review/implement:
+
+- Performance-MemoryLeaks: If this application is intended to monitor a CPU average continuously (24/24h) then both the backend and frontend have to tested about memory leaks on a long period. It might also be a good to implement an automatic and regular restart of backend with sh script, and automatical reload of the frontend page (To be noted, today the frontend doesn't retain the previous data after a refresh, this would be required for this implementation).
+- Performance-Stability: A process watcher should be put in place to make sure the backend automatically restart after a crash.
+- Design: Review of the PoC design should be done with a UX team
+- Stability: Fix all the known bugs (ref section below)
+- Test: Coverage is not satisfying yet, for a production release it's recommended to improve the coverage rate.
+- Test: E2E testing scenarios are missing and should be implemented, there is only unit testing of components.
+
+## Known bugs
+
+- Bugs: When the first alert is shown to user, there is a warning "findDOMNode is deprecated in StrictMode" coming from the use of Snackbar component, however the issue is known and will be fixed by the community soon in material-ui v5 [#13394](https://github.com/mui-org/material-ui/issues/13394). A library update should be done before a load in production, despite the current warning is not a blocker.
+
+## LICENSE
+
+[MIT](./LICENSE.md)

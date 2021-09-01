@@ -1,6 +1,8 @@
 {
   "name": "@monitoring/root",
   "private": true,
+  "license": "MIT",
+  "author": "Mathieu Seiler <mathieu.seiler@gmail.com> (https://www.linkedin.com/in/mathieu-seiler/)",
   "workspaces": [
     "apps/*",
     "packages/*"
@@ -8,7 +10,8 @@
   "scripts": {
     "build": "lerna run build",
     "start": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start\" \"yarn workspace @monitoring/backend start\"",
-    "start:dev": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start:dev\" \"yarn workspace @monitoring/backend start:dev\""
+    "start:dev": "concurrently -n frontend,backend \"yarn workspace @monitoring/frontend start:dev\" \"yarn workspace @monitoring/backend start:dev\"",
+    "test": "lerna run test"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^4.17.0",

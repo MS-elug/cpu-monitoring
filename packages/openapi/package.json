@@ -1,6 +1,7 @@
 {
-    "name": "@monitoring/openapi",
-    "version": "1.0.0",
-    "main": "monitoring-api.yml",
-    "license": "UNLICENSED"
+  "name": "@monitoring/openapi",
+  "version": "1.0.0",
+  "main": "monitoring-api.yml",
+  "license": "MIT",
+  "author": "Mathieu Seiler <mathieu.seiler@gmail.com> (https://www.linkedin.com/in/mathieu-seiler/)"
 }

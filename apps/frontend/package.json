@@ -2,7 +2,8 @@
   "name": "@monitoring/frontend",
   "version": "1.0.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "author": "Mathieu Seiler <mathieu.seiler@gmail.com> (https://www.linkedin.com/in/mathieu-seiler/)",
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",

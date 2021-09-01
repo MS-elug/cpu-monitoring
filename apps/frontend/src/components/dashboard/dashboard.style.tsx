@@ -13,7 +13,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundColor: '#252f3e',
     display: 'flex',
     justifyContent: 'center',
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(2)  
   },
   graphBox: {
     display: 'flex',
@@ -25,7 +25,8 @@ export const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2)
+    paddingBottom: theme.spacing(2),
+    overflowY: 'auto'
   },
   dataBox: {
     display: 'flex',
@@ -48,6 +49,6 @@ export const useStyles = makeStyles((theme) => ({
     color: 'white'
   },
   explanations: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   }
 }));

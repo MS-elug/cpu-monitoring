@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "main": "dist/index.js",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "author": "Mathieu Seiler <mathieu.seiler@gmail.com> (https://www.linkedin.com/in/mathieu-seiler/)",
   "scripts": {
     "build": "rimraf dist && tsc --project ./tsconfig.json",
     "start": "cross-env TS_NODE_PROJECT=tsconfig.run.json node --require dotenv/config -r tsconfig-paths/register ./dist/index.js",
